@@ -9,6 +9,16 @@ using namespace std;
 const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 640;
 
+//The window we'll be rendering to
+SDL_Window *window = NULL;
+
+//The surface contained by the window
+SDL_Surface *screenSurface = NULL;
+
+SDL_Surface *walls;
+
+int tiles[600];
+
 void printTile(int *tiles)
 {
     for (int i = 0; i < 20; i++)
@@ -60,7 +70,7 @@ SDL_Surface *createMapSurface(int *tiles)
     return surf;
 }
 
-void loadTiles(int *tiles)
+bool loadTiles()
 {
     ifstream tileFile("tiles.txt");
     if (tileFile.is_open())
@@ -72,8 +82,10 @@ void loadTiles(int *tiles)
             tiles[i] = tile;
             i++;
         }
+        return 1;
         tileFile.close();
     }
+    return 0;
 }
 
 bool checkWall(int *lists, int x, int y)
@@ -81,113 +93,129 @@ bool checkWall(int *lists, int x, int y)
     return lists[(y / 32) * (SCREEN_WIDTH / 32) + x / 32];
 }
 
-int main(int argc, char *args[])
+bool userAction(int *tiles)
 {
+}
 
-    //The window we'll be rendering to
-    SDL_Window *window = NULL;
-
-    //The surface contained by the window
-    SDL_Surface *screenSurface = NULL;
-
-    SDL_Surface *walls;
-
-    //Initialize SDL
+bool initialize()
+{
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        return 0;
     }
-    else
+    //Create window
+    window = SDL_CreateWindow("My Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (window == NULL)
     {
-        //Create window
-        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL)
+        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 0;
+    }
+    //Get window surface
+    screenSurface = SDL_GetWindowSurface(window);
+
+    return 1;
+}
+
+bool createMap()
+{
+    return true;
+}
+
+int main(int argc, char *args[])
+{
+    cout << "Initializing..." << endl;
+    if (!initialize())
+    {
+        cout << "Failed to Initialize..." << endl;
+        return 0;
+    }
+    cout << "Successfully initialized!!" << endl;
+    cout << "Creating a map..." << endl;
+    if (!createMap())
+    {
+        cout << "Faild to create a map" << endl;
+        return 0;
+    }
+    cout << "Map created successfully!!" << endl;
+    cout << "Loading the map..." << endl;
+    if (!loadTiles())
+    {
+        cout << "Failed to load the map" << endl;
+        return 0;
+    }
+    cout << "Map loaded successfully!!" << endl;
+
+    walls = createMapSurface(tiles);
+    //Fill the surface white
+
+    SDL_Event event;
+    SDL_Rect rect;
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = 32;
+    rect.h = 32;
+    bool quit = false;
+    while (!quit)
+    {
+        while (SDL_PollEvent(&event) != 0)
         {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        }
-        else
-        {
-            //Get window surface
-            screenSurface = SDL_GetWindowSurface(window);
-
-            int tiles[600];
-            loadTiles(tiles);
-            // printTile(tiles);
-
-            walls = createMapSurface(tiles);
-            //Fill the surface white
-
-            SDL_Event event;
-            SDL_Rect rect;
-            rect.x = 0;
-            rect.y = 0;
-            rect.w = 32;
-            rect.h = 32;
-            bool quit = false;
-            while (!quit)
+            if (event.type == SDL_QUIT)
             {
-                while (SDL_PollEvent(&event) != 0)
+                quit = true;
+            }
+            else if (event.type == SDL_KEYDOWN)
+            {
+                if (event.key.keysym.sym == SDLK_RIGHT)
                 {
-                    if (event.type == SDL_QUIT)
+                    rect.x += 32;
+                    rect.x = rect.x % SCREEN_WIDTH;
+                    if (checkWall(tiles, rect.x, rect.y))
                     {
-                        quit = true;
-                    }
-                    else if (event.type == SDL_KEYDOWN)
-                    {
-                        if (event.key.keysym.sym == SDLK_RIGHT)
-                        {
-                            rect.x += 32;
-                            rect.x = rect.x % SCREEN_WIDTH;
-                            if (checkWall(tiles, rect.x, rect.y))
-                            {
-                                rect.x -= 32;
-                                rect.x += SCREEN_WIDTH;
-                                rect.x = rect.x % SCREEN_WIDTH;
-                            }
-                        }
-                        else if (event.key.keysym.sym == SDLK_LEFT)
-                        {
-                            rect.x -= 32;
-                            rect.x += SCREEN_WIDTH;
-                            rect.x = rect.x % SCREEN_WIDTH;
-                            if (checkWall(tiles, rect.x, rect.y))
-                            {
-                                rect.x += 32;
-                                rect.x = rect.x % SCREEN_WIDTH;
-                            }
-                        }
-                        else if (event.key.keysym.sym == SDLK_DOWN)
-                        {
-                            rect.y += 32;
-                            rect.y = rect.y % SCREEN_HEIGHT;
-                            if (checkWall(tiles, rect.x, rect.y))
-                            {
-                                rect.y -= 32;
-                                rect.y += SCREEN_HEIGHT;
-                                rect.y = rect.y % SCREEN_HEIGHT;
-                            }
-                        }
-                        else if (event.key.keysym.sym == SDLK_UP)
-                        {
-                            rect.y -= 32;
-                            rect.y += SCREEN_HEIGHT;
-                            rect.y = rect.y % SCREEN_HEIGHT;
-                            if (checkWall(tiles, rect.x, rect.y))
-                            {
-                                rect.y += 32;
-                                rect.y = rect.y % SCREEN_HEIGHT;
-                            }
-                        }
+                        rect.x -= 32;
+                        rect.x += SCREEN_WIDTH;
+                        rect.x = rect.x % SCREEN_WIDTH;
                     }
                 }
-                // SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 3, 252, 127));
-                SDL_BlitSurface(walls, NULL, screenSurface, NULL);
-                SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface->format, 161, 66, 245));
-                SDL_UpdateWindowSurface(window);
+                else if (event.key.keysym.sym == SDLK_LEFT)
+                {
+                    rect.x -= 32;
+                    rect.x += SCREEN_WIDTH;
+                    rect.x = rect.x % SCREEN_WIDTH;
+                    if (checkWall(tiles, rect.x, rect.y))
+                    {
+                        rect.x += 32;
+                        rect.x = rect.x % SCREEN_WIDTH;
+                    }
+                }
+                else if (event.key.keysym.sym == SDLK_DOWN)
+                {
+                    rect.y += 32;
+                    rect.y = rect.y % SCREEN_HEIGHT;
+                    if (checkWall(tiles, rect.x, rect.y))
+                    {
+                        rect.y -= 32;
+                        rect.y += SCREEN_HEIGHT;
+                        rect.y = rect.y % SCREEN_HEIGHT;
+                    }
+                }
+                else if (event.key.keysym.sym == SDLK_UP)
+                {
+                    rect.y -= 32;
+                    rect.y += SCREEN_HEIGHT;
+                    rect.y = rect.y % SCREEN_HEIGHT;
+                    if (checkWall(tiles, rect.x, rect.y))
+                    {
+                        rect.y += 32;
+                        rect.y = rect.y % SCREEN_HEIGHT;
+                    }
+                }
             }
-
-            //Wait two seconds
         }
+        // SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 3, 252, 127));
+        SDL_BlitSurface(walls, NULL, screenSurface, NULL);
+        SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface->format, 161, 66, 245));
+        SDL_UpdateWindowSurface(window);
     }
     SDL_FreeSurface(walls);
     //Destroy window
