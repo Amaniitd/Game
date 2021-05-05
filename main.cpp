@@ -10,7 +10,6 @@ using namespace std;
 const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 640;
 
-
 int main(int argc, char *args[])
 {
     cout << "Initializing..." << endl;
@@ -37,10 +36,20 @@ int main(int argc, char *args[])
     cout << "Map loaded successfully!!" << endl;
 
     game->createMapSurface();
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+    Uint32 frameStart;
+    int frameTime;
     while (game->isRunning)
     {
+        frameStart = SDL_GetTicks();
         game->handleEvents();
         game->render();
+        frameTime = SDL_GetTicks() - frameStart;
+        if (frameDelay > frameTime)
+        {
+            SDL_Delay(frameDelay - frameTime);
+        }
     }
 
     game->Cleanup();
