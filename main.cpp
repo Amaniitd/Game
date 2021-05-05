@@ -7,8 +7,9 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 960;
-const int SCREEN_HEIGHT = 640;
+void displayScore()
+{
+}
 
 int main(int argc, char *args[])
 {
@@ -20,6 +21,7 @@ int main(int argc, char *args[])
         return 0;
     }
     cout << "Successfully initialized!!" << endl;
+
     cout << "Creating a map..." << endl;
     if (!game->createMap())
     {
@@ -27,6 +29,7 @@ int main(int argc, char *args[])
         return 0;
     }
     cout << "Map created successfully!!" << endl;
+
     cout << "Loading the map..." << endl;
     if (!game->loadTiles())
     {
@@ -35,12 +38,20 @@ int main(int argc, char *args[])
     }
     cout << "Map loaded successfully!!" << endl;
 
+    cout << "Displaying the map..." << endl;
     game->createMapSurface();
+    cout << "Map displayed successfully!!" << endl;
+
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
     Uint32 frameStart;
     int frameTime;
-    while (game->isRunning)
+    if (game->running())
+    {
+        cout << "Game is now running!" << endl;
+        cout << "...//...WELCOME!!...//..." << endl;
+    }
+    while (game->running())
     {
         frameStart = SDL_GetTicks();
         game->handleEvents();
@@ -51,7 +62,14 @@ int main(int argc, char *args[])
             SDL_Delay(frameDelay - frameTime);
         }
     }
-
+    cout << "Game finished!!" << endl;
+    cout << "********************************" << endl
+         << endl;
+    cout << "-------------Result---------------" << endl;
+    cout << endl
+         << "********************************" << endl;
+    displayScore();
+    cout << "Cleaning the game..." << endl;
     game->Cleanup();
 
     return 0;

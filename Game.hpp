@@ -17,7 +17,6 @@ public:
     bool createMap();
     bool loadTiles();
     void createMapSurface();
-    int tiles[600];
     bool checkWall(int x, int y);
     SDL_Surface *screenSurface;
 
@@ -25,9 +24,16 @@ public:
     SDL_Window *window;
 
     SDL_Surface *walls;
-    const int SCREEN_WIDTH = 960;
-    const int SCREEN_HEIGHT = 640;
-    SDL_Rect rect;
+    const static int MAP_WIDTH = 32;
+    const static int MAP_HEIGHT = 30;
+    const static int TILE_SIZE = 32;
+    int tiles[MAP_WIDTH * MAP_HEIGHT];
+    const int SCREEN_WIDTH = MAP_WIDTH * TILE_SIZE;
+    const int SCREEN_HEIGHT = MAP_HEIGHT * TILE_SIZE;
+    bool toggle = false;
+    int direction = 0;
+    SDL_Rect PlayerRect;
+    SDL_Rect rectTile;
 
     SDL_Event event;
 };

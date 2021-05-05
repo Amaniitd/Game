@@ -1,3 +1,4 @@
-struct player{
-    
+class player{
+    public:
+    int score;
 };
