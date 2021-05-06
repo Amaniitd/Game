@@ -1,11 +1,4 @@
-#include <iostream>
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <fstream>
-#include <string>
 #include "Game.hpp"
-
-using namespace std;
 
 void displayScore()
 {
@@ -62,7 +55,7 @@ int main(int argc, char *args[])
             SDL_Delay(frameDelay - frameTime);
         }
     }
-    cout << "Game finished!!" << endl;
+    cout << endl << "Game finished!!" << endl;
     cout << "********************************" << endl
          << endl;
     cout << "-------------Result---------------" << endl;
