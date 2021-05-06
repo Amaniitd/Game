@@ -54,7 +54,7 @@ bool Game::loadTiles()
 
 void Game::createMapSurface()
 {
-    map->drawMap();
+    map->drawMapWithDelay();
     SDL_RenderPresent(renderer);
 }
 

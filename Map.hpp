@@ -10,6 +10,7 @@ public:
 
     bool loadMap();
     void drawMap();
+    void drawMapWithDelay();
 
     SDL_Rect src, dst;
     SDL_Texture *wall;
