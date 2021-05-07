@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <iostream>
 using namespace std;
-
+#include "Audio.hpp"
 class Game
 {
 public:
@@ -26,8 +26,9 @@ public:
     bool loadTiles();
     void createMapSurface();
     bool checkWall(int x, int y);
-
     bool isRunning;
+    Audio intro;
+    int idol, run, attack;
     SDL_Window *window;
     inline static SDL_Renderer *renderer;
     SDL_Texture *wallTexture;

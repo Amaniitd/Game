@@ -48,6 +48,7 @@ int main(int argc, char *args[])
     {
         frameStart = SDL_GetTicks();
         game->handleEvents();
+        game->update();
         game->render();
         frameTime = SDL_GetTicks() - frameStart;
         if (frameDelay > frameTime)
@@ -55,7 +56,8 @@ int main(int argc, char *args[])
             SDL_Delay(frameDelay - frameTime);
         }
     }
-    cout << endl << "Game finished!!" << endl;
+    cout << endl
+         << "Game finished!!" << endl;
     cout << "********************************" << endl
          << endl;
     cout << "-------------Result---------------" << endl;

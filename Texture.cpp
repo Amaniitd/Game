@@ -13,6 +13,12 @@ SDL_Texture *texture::loadTexture(const char *filename)
     return tex;
 }
 
-void texture::Draw(SDL_Texture *tex, SDL_Rect src, SDL_Rect dst){
+void texture::Draw(SDL_Texture *tex, SDL_Rect dst)
+{
+    SDL_RenderCopy(Game::renderer, tex, NULL, &dst);
+}
+
+void texture::Draw(SDL_Texture *tex, SDL_Rect src, SDL_Rect dst)
+{
     SDL_RenderCopy(Game::renderer, tex, &src, &dst);
 }
