@@ -28,7 +28,10 @@ public:
     bool checkWall(int x, int y);
     bool isRunning;
     Audio intro;
-    int idol, run, attack;
+    int speed;
+    bool l, r, u, d, fall;
+    int idoll, idolr, runl, runr;
+    int idolu, idold, runu, rund;
     SDL_Window *window;
     inline static SDL_Renderer *renderer;
     SDL_Texture *wallTexture;

@@ -12,26 +12,29 @@ void Object::initObject(const char *filename, int x, int y)
     dstRect.h = 32;
 }
 
-// void Object::Update()
-// {
-//     srcRect.h = 64;
-//     srcRect.w = 64;
-//     srcRect.x = 0;
-//     srcRect.y = 0;
-
-//     dstRect.x = xpos;
-//     dstRect.y = ypos;
-//     dstRect.w = 32;
-//     dstRect.h = 32;
-// }
-
 void Object::setSource(int x, int y, int w, int h)
 {
-    cout << x << ", " << y << ", " << w << ", " << h << endl;
     srcRect.h = h;
     srcRect.w = w;
     srcRect.x = x;
     srcRect.y = y;
+}
+void Object::setSource(int x, int y)
+{
+    srcRect.x = x;
+    srcRect.y = y;
+}
+void Object::setDest(int x, int y, int w, int h)
+{
+    dstRect.x = x;
+    dstRect.y = y;
+    dstRect.w = w;
+    dstRect.h = h;
+}
+void Object::setDest(int x, int y)
+{
+    dstRect.x = x;
+    dstRect.y = y;
 }
 void Object::Render()
 {

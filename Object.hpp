@@ -10,8 +10,19 @@ public:
     void Render();
     void setSource(int x, int y, int w, int h);
     void setDest(int x, int y, int w, int h);
+    void setSource(int x, int y);
+    void setDest(int x, int y);
+    SDL_Rect getDest() const { return dstRect; }
+    SDL_Rect getSource() const { return srcRect; }
+    int getDX() const { return dstRect.x; }
+    int getDY() const { return dstRect.y; }
+    int getDW() const { return dstRect.w; }
+    int getDH() const { return dstRect.h; }
+    void setId(int i) { id = i; }
+    int getId() const { return id; }
 
 private:
+    int id;
     int xpos;
     int ypos;
     // SDL_Rect giveCurrentPosition();

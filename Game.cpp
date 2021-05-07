@@ -5,14 +5,10 @@
 #include "textLoader.hpp"
 #include "welcomeScreen.hpp"
 #include "Entity.hpp"
-// #include "Components.hpp"
 
 Map *map;
 
-Entity player1;
-
-// Manager manager;
-// auto &newPlayer(manager.addEntity());
+Entity player;
 
 Game::Game()
 {
@@ -46,14 +42,19 @@ bool Game::initialize()
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     }
     map = new Map();
-    player1.initObject("image/female.png", 32, 32);
-    attack = player1.createCycle(20, 64, 64, 13, 10);
-    player1.setCurrentAnimation(attack);
+    player.initObject("image/female.png", 32, 32);
+    idolr = player.createCycle(12, 64, 64, 2, 30);
+    idold = player.createCycle(11, 64, 64, 2, 30);
+    idoll = player.createCycle(10, 64, 64, 2, 30);
+    idolu = player.createCycle(9, 64, 64, 9, 30);
+    runr = player.createCycle(12, 64, 64, 9, 2);
+    rund = player.createCycle(11, 64, 64, 9, 2);
+    runl = player.createCycle(10, 64, 64, 9, 2);
+    runu = player.createCycle(9, 64, 64, 9, 2);
+    player.setCurAnimation(idolr);
+    speed = 3;
     initTextLoader(100);
     initWelcomeScreen();
-
-    // newPlayer.addComponent<TransitionComponent>();
-    // newPlayer.addComponent<SpriteComponent>("image/female.png");
     return 1;
 }
 
@@ -68,18 +69,18 @@ bool Game::loadTiles()
 
 void Game::createMapSurface()
 {
-    // intro.load("sound/intermission.wav");
-    // intro.play();
-    // loadScreen();
-    // SDL_RenderPresent(renderer);
-    // SDL_Delay(500);
-    // SDL_Color color = {237, 52, 52, 0};
-    // displayText("Hunter X Hunter", 150, 400, color);
-    // SDL_RenderPresent(renderer);
-    // SDL_Delay(2000);
-    // map->drawMapWithDelay();
-    // intro.pause();
-    // SDL_RenderPresent(renderer);
+    intro.load("sound/intermission.wav");
+    intro.play();
+    loadScreen();
+    SDL_RenderPresent(renderer);
+    SDL_Delay(500);
+    SDL_Color color = {237, 52, 52, 0};
+    displayText("Hunter X Hunter", 150, 400, color);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(2000);
+    map->drawMapWithDelay();
+    intro.pause();
+    SDL_RenderPresent(renderer);
 }
 
 bool Game::checkWall(int x, int y)
@@ -92,6 +93,7 @@ void Game::Cleanup()
     //Destroy window
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    TTF_CloseFont(Sans);
     //Quit SDL subsystems
     SDL_Quit();
     cout << "Game cleaned" << endl;
@@ -99,16 +101,47 @@ void Game::Cleanup()
 
 void Game::update()
 {
-    player1.updateAnimation();
-    // manager.refresh();
-    // manager.update();
-    // cout << newPlayer.getComponent<TransitionComponent>().x() << " " << newPlayer.getComponent<TransitionComponent>().y() << endl;
+    if (l)
+    {
+        if (player.getCurAnimation() != runl)
+        {
+            player.setCurAnimation(runl);
+        }
+        player.setDest(player.getDX() - speed, player.getDY());
+    }
+    if (r)
+    {
+        if (player.getCurAnimation() != runr)
+        {
+            player.setCurAnimation(runr);
+        }
+        player.setDest(player.getDX() + speed, player.getDY());
+    }
+    if (u)
+    {
+        if (player.getCurAnimation() != runu)
+        {
+            player.setCurAnimation(runu);
+        }
+        player.setDest(player.getDX(), player.getDY() - speed);
+    }
+    if (d)
+    {
+        if (player.getCurAnimation() != rund)
+        {
+            player.setCurAnimation(rund);
+        }
+        player.setDest(player.getDX(), player.getDY() + speed);
+    }
+    player.updateAnimation();
 }
 void Game::render()
 {
     SDL_RenderClear(renderer);
     map->drawMap();
-    player1.Render();
+    player.Render();
+    // player2.Render();
+    // player3.Render();
     SDL_RenderPresent(renderer);
 }
 
@@ -123,57 +156,50 @@ void Game::handleEvents()
         }
         else if (event.type == SDL_KEYDOWN)
         {
-            if (event.key.keysym.sym == SDLK_RIGHT)
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+                isRunning = false;
+            if (event.key.keysym.sym == SDLK_a)
             {
-                // PlayerRect.x += TILE_SIZE;
-                // PlayerRect.x = PlayerRect.x % SCREEN_WIDTH;
-                // if (checkWall(PlayerRect.x, PlayerRect.y))
-                // {
-                //     PlayerRect.x -= TILE_SIZE;
-                //     PlayerRect.x += SCREEN_WIDTH;
-                //     PlayerRect.x = PlayerRect.x % SCREEN_WIDTH;
-                // }
-                // direction = 3;
-                // toggle = !toggle;
+                l = 1;
+                r = 0;
             }
-            else if (event.key.keysym.sym == SDLK_LEFT)
+            if (event.key.keysym.sym == SDLK_d)
             {
-                // PlayerRect.x -= TILE_SIZE;
-                // PlayerRect.x += SCREEN_WIDTH;
-                // PlayerRect.x = PlayerRect.x % SCREEN_WIDTH;
-                // if (checkWall(PlayerRect.x, PlayerRect.y))
-                // {
-                //     PlayerRect.x += TILE_SIZE;
-                //     PlayerRect.x = PlayerRect.x % SCREEN_WIDTH;
-                // }
-                // direction = 2;
-                // toggle = !toggle;
+                r = 1;
+                l = 0;
             }
-            else if (event.key.keysym.sym == SDLK_DOWN)
+            if (event.key.keysym.sym == SDLK_w)
             {
-                // PlayerRect.y += TILE_SIZE;
-                // PlayerRect.y = PlayerRect.y % SCREEN_HEIGHT;
-                // if (checkWall(PlayerRect.x, PlayerRect.y))
-                // {
-                //     PlayerRect.y -= TILE_SIZE;
-                //     PlayerRect.y += SCREEN_HEIGHT;
-                //     PlayerRect.y = PlayerRect.y % SCREEN_HEIGHT;
-                // }
-                // direction = 1;
-                // toggle = !toggle;
+                u = 1;
+                d = 0;
             }
-            else if (event.key.keysym.sym == SDLK_UP)
+            if (event.key.keysym.sym == SDLK_s)
             {
-                // PlayerRect.y -= TILE_SIZE;
-                // PlayerRect.y += SCREEN_HEIGHT;
-                // PlayerRect.y = PlayerRect.y % SCREEN_HEIGHT;
-                // if (checkWall(PlayerRect.x, PlayerRect.y))
-                // {
-                //     PlayerRect.y += TILE_SIZE;
-                //     PlayerRect.y = PlayerRect.y % SCREEN_HEIGHT;
-                // }
-                // direction = 0;
-                // toggle = !toggle;
+                d = 1;
+                u = 0;
+            }
+        }
+        if (event.type == SDL_KEYUP)
+        {
+            if (event.key.keysym.sym == SDLK_a)
+            {
+                l = 0;
+                player.setCurAnimation(idoll);
+            }
+            if (event.key.keysym.sym == SDLK_d)
+            {
+                r = 0;
+                player.setCurAnimation(idolr);
+            }
+            if (event.key.keysym.sym == SDLK_w)
+            {
+                u = 0;
+                player.setCurAnimation(idolu);
+            }
+            if (event.key.keysym.sym == SDLK_s)
+            {
+                d = 0;
+                player.setCurAnimation(idold);
             }
         }
     }

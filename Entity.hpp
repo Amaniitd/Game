@@ -11,12 +11,13 @@ public:
     int getHealth() { return health; }
     int getMaxHealth() { return maxHealth; }
     int createCycle(int row, int w, int h, int amount, int speed);
-    void setCurrentAnimation(int c)
+    void setCurAnimation(int c)
     {
         begin = 0;
         currAnimation = c;
     }
     void updateAnimation();
+    int getCurAnimation() const { return currAnimation; }
 
 private:
     int health, maxHealth;
@@ -31,5 +32,6 @@ private:
     };
     int currAnimation;
     int begin;
+    int newAnim;
     vector<cycle> animations;
 };
