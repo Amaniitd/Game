@@ -2,7 +2,6 @@
 #include "Game.hpp"
 #include "SDL2/SDL_ttf.h"
 TTF_Font *Sans;
-
 void initTextLoader(int size)
 {
     TTF_Init();

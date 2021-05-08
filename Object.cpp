@@ -38,5 +38,11 @@ void Object::setDest(int x, int y)
 }
 void Object::Render()
 {
-    SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &dstRect);
+    tmpRect = dstRect;
+    tmpRect.y -= 24;
+    tmpRect.x -= 8;
+    tmpRect.w = 48;
+    tmpRect.h = 48;
+    cout << dstRect.x << " " << dstRect.y << endl;
+    SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &tmpRect);
 }

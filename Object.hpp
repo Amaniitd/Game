@@ -29,6 +29,7 @@ private:
     SDL_Rect srcRect;
     SDL_Rect dstRect;
     SDL_Texture *objTexture;
+    SDL_Rect tmpRect;
 
     // SDL_Renderer *renderer;
     // int speed = 4; //should be factor of tile size

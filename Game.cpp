@@ -37,10 +37,6 @@ bool Game::initialize()
         return 0;
     }
     renderer = SDL_CreateRenderer(window, -1, 0);
-    if (renderer)
-    {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    }
     map = new Map();
     player.initObject("image/female.png", 32, 32);
     idolr = player.createCycle(12, 64, 64, 2, 30);
@@ -69,31 +65,42 @@ bool Game::loadTiles()
 
 void Game::createMapSurface()
 {
-    intro.load("sound/intermission.wav");
-    intro.play();
-    loadScreen();
-    SDL_RenderPresent(renderer);
-    SDL_Delay(500);
-    SDL_Color color = {237, 52, 52, 0};
-    displayText("Hunter X Hunter", 150, 400, color);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(2000);
-    map->drawMapWithDelay();
-    intro.pause();
-    SDL_RenderPresent(renderer);
+    // intro.load("sound/intermission.wav");
+    // intro.play();
+    // loadScreen();
+    // SDL_RenderPresent(renderer);
+    // SDL_Delay(500);
+    // SDL_Color color = {237, 52, 52, 0};
+    // displayText("Hunter X Hunter", 150, 400, color);
+    // SDL_RenderPresent(renderer);
+    // SDL_Delay(2000);
+    // map->drawMapWithDelay();
+    // intro.pause();
+    // SDL_RenderPresent(renderer);
 }
 
 bool Game::checkWall(int x, int y)
 {
-    return map->map[(y / TILE_SIZE)][x / TILE_SIZE];
-}
+    if (x % TILE_SIZE < 10 && y % TILE_SIZE < 10)
+    {
+        return map->map[y / TILE_SIZE][x / TILE_SIZE];
+    }
+    if (x % TILE_SIZE < 10)
+    {
+        return map->map[y / TILE_SIZE][(x / TILE_SIZE)] || map->map[(y + 24) / TILE_SIZE][(x / TILE_SIZE)];
+    }
+    if (y % TILE_SIZE < 10)
+    {
+        return map->map[y / TILE_SIZE][(x / TILE_SIZE)] || map->map[(y / TILE_SIZE)][(x + 24) / TILE_SIZE];
+    }
 
+    return map->map[y / TILE_SIZE][(x / TILE_SIZE)] || map->map[(y / TILE_SIZE)][(x + 24) / TILE_SIZE] || map->map[(y + 24) / TILE_SIZE][(x + 24) / TILE_SIZE] || map->map[((y + 24) / TILE_SIZE)][(x / TILE_SIZE)];
+}
 void Game::Cleanup()
 {
     //Destroy window
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
-    TTF_CloseFont(Sans);
     //Quit SDL subsystems
     SDL_Quit();
     cout << "Game cleaned" << endl;
@@ -108,6 +115,10 @@ void Game::update()
             player.setCurAnimation(runl);
         }
         player.setDest(player.getDX() - speed, player.getDY());
+        if (checkWall(player.getDX(), player.getDY()))
+        {
+            player.setDest(player.getDX() + TILE_SIZE - (player.getDX() % 32), player.getDY());
+        }
     }
     if (r)
     {
@@ -116,6 +127,10 @@ void Game::update()
             player.setCurAnimation(runr);
         }
         player.setDest(player.getDX() + speed, player.getDY());
+        if (checkWall(player.getDX(), player.getDY()))
+        {
+            player.setDest(player.getDX() - speed, player.getDY());
+        }
     }
     if (u)
     {
@@ -124,6 +139,10 @@ void Game::update()
             player.setCurAnimation(runu);
         }
         player.setDest(player.getDX(), player.getDY() - speed);
+        if (checkWall(player.getDX(), player.getDY()))
+        {
+            player.setDest(player.getDX(), player.getDY() + TILE_SIZE - (player.getDY() % 32));
+        }
     }
     if (d)
     {
@@ -131,7 +150,12 @@ void Game::update()
         {
             player.setCurAnimation(rund);
         }
+
         player.setDest(player.getDX(), player.getDY() + speed);
+        if (checkWall(player.getDX(), player.getDY()))
+        {
+            player.setDest(player.getDX(), player.getDY() - speed);
+        }
     }
     player.updateAnimation();
 }
