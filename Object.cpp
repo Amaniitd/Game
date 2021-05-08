@@ -43,6 +43,5 @@ void Object::Render()
     tmpRect.x -= 8;
     tmpRect.w = 48;
     tmpRect.h = 48;
-    cout << dstRect.x << " " << dstRect.y << endl;
     SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &tmpRect);
 }

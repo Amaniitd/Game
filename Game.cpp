@@ -117,7 +117,7 @@ void Game::update()
         player.setDest(player.getDX() - speed, player.getDY());
         if (checkWall(player.getDX(), player.getDY()))
         {
-            player.setDest(player.getDX() + TILE_SIZE - (player.getDX() % 32), player.getDY());
+            player.setDest(player.getDX() + speed, player.getDY());
         }
     }
     if (r)
@@ -141,7 +141,7 @@ void Game::update()
         player.setDest(player.getDX(), player.getDY() - speed);
         if (checkWall(player.getDX(), player.getDY()))
         {
-            player.setDest(player.getDX(), player.getDY() + TILE_SIZE - (player.getDY() % 32));
+            player.setDest(player.getDX(), player.getDY() + speed);
         }
     }
     if (d)
