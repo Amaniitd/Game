@@ -6,8 +6,6 @@
 #include "welcomeScreen.hpp"
 #include "Entity.hpp"
 
-Map *map;
-
 Entity player;
 
 Game::Game()
@@ -37,7 +35,7 @@ bool Game::initialize()
         return 0;
     }
     renderer = SDL_CreateRenderer(window, -1, 0);
-    map = new Map();
+    Map();
     player.initObject("image/female.png", 32, 32);
     idolr = player.createCycle(12, 64, 64, 2, 30);
     idold = player.createCycle(11, 64, 64, 2, 30);
@@ -60,7 +58,7 @@ bool Game::createMap()
 }
 bool Game::loadTiles()
 {
-    return map->loadMap();
+    return loadMap();
 }
 
 void Game::createMapSurface()
@@ -74,7 +72,7 @@ void Game::createMapSurface()
     // displayText("Hunter X Hunter", 150, 400, color);
     // SDL_RenderPresent(renderer);
     // SDL_Delay(2000);
-    // map->drawMapWithDelay();
+    // drawMapWithDelay();
     // intro.pause();
     // SDL_RenderPresent(renderer);
 }
@@ -83,18 +81,18 @@ bool Game::checkWall(int x, int y)
 {
     if (x % TILE_SIZE < 10 && y % TILE_SIZE < 10)
     {
-        return map->map[y / TILE_SIZE][x / TILE_SIZE];
+        return map[y / TILE_SIZE][x / TILE_SIZE];
     }
     if (x % TILE_SIZE < 10)
     {
-        return map->map[y / TILE_SIZE][(x / TILE_SIZE)] || map->map[(y + 24) / TILE_SIZE][(x / TILE_SIZE)];
+        return map[y / TILE_SIZE][(x / TILE_SIZE)] || map[(y + 24) / TILE_SIZE][(x / TILE_SIZE)];
     }
     if (y % TILE_SIZE < 10)
     {
-        return map->map[y / TILE_SIZE][(x / TILE_SIZE)] || map->map[(y / TILE_SIZE)][(x + 24) / TILE_SIZE];
+        return map[y / TILE_SIZE][(x / TILE_SIZE)] || map[(y / TILE_SIZE)][(x + 24) / TILE_SIZE];
     }
 
-    return map->map[y / TILE_SIZE][(x / TILE_SIZE)] || map->map[(y / TILE_SIZE)][(x + 24) / TILE_SIZE] || map->map[(y + 24) / TILE_SIZE][(x + 24) / TILE_SIZE] || map->map[((y + 24) / TILE_SIZE)][(x / TILE_SIZE)];
+    return map[y / TILE_SIZE][(x / TILE_SIZE)] || map[(y / TILE_SIZE)][(x + 24) / TILE_SIZE] || map[(y + 24) / TILE_SIZE][(x + 24) / TILE_SIZE] || map[((y + 24) / TILE_SIZE)][(x / TILE_SIZE)];
 }
 void Game::Cleanup()
 {
@@ -162,7 +160,7 @@ void Game::update()
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    map->drawMap();
+    drawMap();
     player.Render();
     // player2.Render();
     // player3.Render();

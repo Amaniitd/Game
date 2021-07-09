@@ -35,8 +35,8 @@ public:
     SDL_Window *window;
     inline static SDL_Renderer *renderer;
     SDL_Texture *wallTexture;
-    const static int MAP_WIDTH = 32;
-    const static int MAP_HEIGHT = 30;
+    const static int MAP_WIDTH = 35;
+    const static int MAP_HEIGHT = 25;
     const static int TILE_SIZE = 32;
     static int tiles[MAP_WIDTH * MAP_HEIGHT];
     const static int SCREEN_WIDTH = MAP_WIDTH * TILE_SIZE;

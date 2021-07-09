@@ -3,9 +3,7 @@
 #include "Map.hpp"
 
 SDL_Texture *loadingScreen;
-const static int MAP_WIDTH = 32;
-const static int MAP_HEIGHT = 30;
-const static int TILE_SIZE = 32;
+
 void loadScreen()
 {
     SDL_Rect rectWall;
@@ -22,6 +20,7 @@ void loadScreen()
     }
 }
 
-void initWelcomeScreen(){
+void initWelcomeScreen()
+{
     loadingScreen = texture::loadTexture("image/Yellow.png");
 }
