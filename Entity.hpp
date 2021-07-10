@@ -19,7 +19,7 @@ public:
     void updateAnimation();
     int getCurAnimation() const { return currAnimation; }
 
-private:
+    // private:
     int health, maxHealth;
     struct cycle
     {

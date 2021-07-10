@@ -1,12 +1,17 @@
+#pragma once
+
 #include "Game.hpp"
 #include "Texture.hpp"
-#include "Map.hpp"
 #include "Object.hpp"
 #include "textLoader.hpp"
 #include "welcomeScreen.hpp"
 #include "Entity.hpp"
+#include "botAI.hpp"
 
 Entity player;
+botAI b1;
+botAI b2;
+botAI b3;
 
 Game::Game()
 {
@@ -49,6 +54,16 @@ bool Game::initialize()
     speed = 3;
     initTextLoader(100);
     initWelcomeScreen();
+    b1.initializeBot();
+    b2.initializeBot();
+    b3.initializeBot();
+    int a = b1.createCycle(12, 64, 64, 2, 30);
+    int b = b2.createCycle(12, 64, 64, 2, 30);
+    int c = b3.createCycle(12, 64, 64, 2, 30);
+
+    b1.setCurAnimation(a);
+    b2.setCurAnimation(b);
+    b3.setCurAnimation(c);
     return 1;
 }
 
@@ -156,12 +171,18 @@ void Game::update()
         }
     }
     player.updateAnimation();
+    b1.updateAnimation();
+    b2.updateAnimation();
+    b3.updateAnimation();
 }
 void Game::render()
 {
     SDL_RenderClear(renderer);
     drawMap();
     player.Render();
+    b1.Render();
+    b2.Render();
+    b3.Render();
     // player2.Render();
     // player3.Render();
     SDL_RenderPresent(renderer);

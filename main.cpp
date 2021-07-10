@@ -6,6 +6,7 @@ void displayScore()
 
 int main(int argc, char *args[])
 {
+    srand(time(0));
     cout << "Initializing..." << endl;
     Game *game = new Game();
     if (!game->initialize())

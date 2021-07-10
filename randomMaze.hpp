@@ -2,6 +2,7 @@
 #include <queue>
 using namespace std;
 #include "Map.hpp"
+
 vector<pair<int, int>> edge;
 const static int MAP_WIDTH = 35;
 const static int MAP_HEIGHT = 25;
