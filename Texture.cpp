@@ -1,3 +1,4 @@
+#pragma once
 #include "Texture.hpp"
 
 SDL_Texture *texture::loadTexture(const char *filename)

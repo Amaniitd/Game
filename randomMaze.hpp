@@ -1,14 +1,6 @@
-#include <vector>
-#include <queue>
-using namespace std;
-#include "Map.hpp"
-
+#pragma once
+#include "global.hpp"
 vector<pair<int, int>> edge;
-const static int MAP_WIDTH = 35;
-const static int MAP_HEIGHT = 25;
-const static int TILE_SIZE = 32;
-int map[MAP_HEIGHT][MAP_WIDTH];
-
 class subSet
 {
 public:

@@ -8,9 +8,6 @@ SDL_Texture *wall;
 SDL_Texture *path;
 SDL_Texture *mapTexture;
 
-const static int SCREEN_WIDTH = MAP_WIDTH * TILE_SIZE;
-const static int SCREEN_HEIGHT = MAP_HEIGHT * TILE_SIZE;
-
 void Map()
 {
     wall = texture::loadTexture("image/[32x32] Dungeon Bricks Shadow.png");

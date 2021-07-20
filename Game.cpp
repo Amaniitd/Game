@@ -9,9 +9,8 @@
 #include "botAI.hpp"
 
 Entity player;
-botAI b1;
-botAI b2;
-botAI b3;
+// botAI *b = new botAI[10];
+vector<botAI *> b;
 
 Game::Game()
 {
@@ -54,16 +53,11 @@ bool Game::initialize()
     speed = 3;
     initTextLoader(100);
     initWelcomeScreen();
-    b1.initializeBot();
-    b2.initializeBot();
-    b3.initializeBot();
-    int a = b1.createCycle(12, 64, 64, 2, 30);
-    int b = b2.createCycle(12, 64, 64, 2, 30);
-    int c = b3.createCycle(12, 64, 64, 2, 30);
-
-    b1.setCurAnimation(a);
-    b2.setCurAnimation(b);
-    b3.setCurAnimation(c);
+    for (int i = 0; i < 10; i++)
+    {
+        b.push_back(new botAI);
+        b[i]->initializeBot();
+    }
     return 1;
 }
 
@@ -171,18 +165,20 @@ void Game::update()
         }
     }
     player.updateAnimation();
-    b1.updateAnimation();
-    b2.updateAnimation();
-    b3.updateAnimation();
+    for (int i = 0; i < 10; i++)
+    {
+        b[i]->updateAnimation();
+    }
 }
 void Game::render()
 {
     SDL_RenderClear(renderer);
     drawMap();
     player.Render();
-    b1.Render();
-    b2.Render();
-    b3.Render();
+    for (int i = 0; i < 10; i++)
+    {
+        b[i]->Render();
+    }
     // player2.Render();
     // player3.Render();
     SDL_RenderPresent(renderer);
