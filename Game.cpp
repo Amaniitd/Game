@@ -59,7 +59,7 @@ bool Game::initialize()
     runl = player.createCycle(10, 64, 64, 9, 2);
     runu = player.createCycle(9, 64, 64, 9, 2);
     player.setCurAnimation(idolr);
-    speed = 3;
+    speed = 2;
     initTextLoader(100);
     initWelcomeScreen();
 
@@ -172,6 +172,7 @@ void Game::update()
     player.updateAnimation();
     for (int i = 0; i < 10; i++)
     {
+        b[i]->solve(player.getDY() / 32, player.getDX() / 32, map);
         b[i]->updateAnimation();
     }
 }

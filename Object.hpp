@@ -20,8 +20,6 @@ public:
     int getDH() const { return dstRect.h; }
     void setId(int i) { id = i; }
     int getId() const { return id; }
-
-private:
     int id;
     int xpos;
     int ypos;
