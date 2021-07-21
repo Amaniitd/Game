@@ -24,6 +24,15 @@ Game::~Game()
 {
 }
 
+void Game::initBots()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        b.push_back(new botAI);
+        b[i]->initializeBot(map);
+    }
+}
+
 bool Game::initialize()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -53,11 +62,7 @@ bool Game::initialize()
     speed = 3;
     initTextLoader(100);
     initWelcomeScreen();
-    for (int i = 0; i < 10; i++)
-    {
-        b.push_back(new botAI);
-        b[i]->initializeBot();
-    }
+
     return 1;
 }
 
@@ -67,7 +72,7 @@ bool Game::createMap()
 }
 bool Game::loadTiles()
 {
-    return loadMap();
+    return loadMap(map);
 }
 
 void Game::createMapSurface()
@@ -173,7 +178,7 @@ void Game::update()
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    drawMap();
+    drawMap(map);
     player.Render();
     for (int i = 0; i < 10; i++)
     {

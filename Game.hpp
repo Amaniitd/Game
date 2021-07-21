@@ -18,6 +18,7 @@ public:
     Game();
     ~Game();
     bool initialize();
+    void initBots();
     void update();
     void render();
     void handleEvents();
@@ -39,6 +40,7 @@ public:
     const static int MAP_WIDTH = 35;
     const static int MAP_HEIGHT = 25;
     const static int TILE_SIZE = 32;
+    int map[MAP_HEIGHT][MAP_WIDTH];
     static int tiles[MAP_WIDTH * MAP_HEIGHT];
     const static int SCREEN_WIDTH = MAP_WIDTH * TILE_SIZE;
     const static int SCREEN_HEIGHT = MAP_HEIGHT * TILE_SIZE;

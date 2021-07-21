@@ -7,14 +7,14 @@ SDL_Texture *loadingScreen;
 void loadScreen()
 {
     SDL_Rect rectWall;
-    rectWall.w = TILE_SIZE;
-    rectWall.h = TILE_SIZE;
-    for (int row = 0; row < MAP_HEIGHT; row++)
+    rectWall.w = Game::TILE_SIZE;
+    rectWall.h = Game::TILE_SIZE;
+    for (int row = 0; row < Game::MAP_HEIGHT; row++)
     {
-        for (int col = 0; col < MAP_WIDTH; col++)
+        for (int col = 0; col < Game::MAP_WIDTH; col++)
         {
-            rectWall.x = col * TILE_SIZE;
-            rectWall.y = row * TILE_SIZE;
+            rectWall.x = col * Game::TILE_SIZE;
+            rectWall.y = row * Game::TILE_SIZE;
             texture::Draw(loadingScreen, rectWall);
         }
     }

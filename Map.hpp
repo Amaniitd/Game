@@ -18,7 +18,7 @@ void Map()
     src.h = 32;
 }
 
-bool loadMap()
+bool loadMap(int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
 {
     // ifstream tileFile("tiles.txt");
     // if (tileFile.is_open())
@@ -35,20 +35,20 @@ bool loadMap()
     // }
     // return 0;
 
-    return Maze();
+    return Maze(map);
 }
 
-void drawMap()
+void drawMap(int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
 {
     SDL_Rect rectWall;
-    rectWall.w = TILE_SIZE;
-    rectWall.h = TILE_SIZE;
-    for (int row = 0; row < MAP_HEIGHT; row++)
+    rectWall.w = Game::TILE_SIZE;
+    rectWall.h = Game::TILE_SIZE;
+    for (int row = 0; row < Game::MAP_HEIGHT; row++)
     {
-        for (int col = 0; col < MAP_WIDTH; col++)
+        for (int col = 0; col < Game::MAP_WIDTH; col++)
         {
-            rectWall.x = col * TILE_SIZE;
-            rectWall.y = row * TILE_SIZE;
+            rectWall.x = col * Game::TILE_SIZE;
+            rectWall.y = row * Game::TILE_SIZE;
             int currentTile = map[row][col];
             if (currentTile > 0)
             {
@@ -62,17 +62,17 @@ void drawMap()
     }
 }
 
-void drawMapWithDelay()
+void drawMapWithDelay(int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
 {
     SDL_Rect rectWall;
-    rectWall.w = TILE_SIZE;
-    rectWall.h = TILE_SIZE;
-    for (int row = 0; row < MAP_HEIGHT; row++)
+    rectWall.w = Game::TILE_SIZE;
+    rectWall.h = Game::TILE_SIZE;
+    for (int row = 0; row < Game::MAP_HEIGHT; row++)
     {
-        for (int col = 0; col < MAP_WIDTH; col++)
+        for (int col = 0; col < Game::MAP_WIDTH; col++)
         {
-            rectWall.x = col * TILE_SIZE;
-            rectWall.y = row * TILE_SIZE;
+            rectWall.x = col * Game::TILE_SIZE;
+            rectWall.y = row * Game::TILE_SIZE;
             int currentTile = map[row][col];
             if (currentTile > 0)
             {

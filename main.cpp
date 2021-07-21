@@ -35,7 +35,7 @@ int main(int argc, char *args[])
     cout << "Displaying the map..." << endl;
     game->createMapSurface();
     cout << "Map displayed successfully!!" << endl;
-
+    game->initBots();
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
     Uint32 frameStart;
