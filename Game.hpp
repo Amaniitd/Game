@@ -32,8 +32,11 @@ public:
     Audio intro;
     int speed;
     bool l, r, u, d, fall;
+    bool l2, r2, u2, d2;
     int idoll, idolr, runl, runr;
     int idolu, idold, runu, rund;
+    bool attack = false;
+    int attackl, attackr, attacku, attackd;
     SDL_Window *window;
     inline static SDL_Renderer *renderer;
     SDL_Texture *wallTexture;

@@ -30,3 +30,22 @@ void Entity::updateAnimation()
         animations[currAnimation].tick = 0;
     }
 }
+bool Entity::updateAnimationOnce()
+{
+    setSource(animations[currAnimation].w * animations[currAnimation].tick,
+              animations[currAnimation].h * animations[currAnimation].row,
+              animations[currAnimation].w,
+              animations[currAnimation].h);
+    if (begin > animations[currAnimation].speed)
+    {
+        animations[currAnimation].tick++;
+        begin = 0;
+    }
+    begin++;
+    if (animations[currAnimation].tick >= animations[currAnimation].amount)
+    {
+        animations[currAnimation].tick = 0;
+        return false;
+    }
+    return true;
+}

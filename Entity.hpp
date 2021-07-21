@@ -17,6 +17,7 @@ public:
         currAnimation = c;
     }
     void updateAnimation();
+    bool updateAnimationOnce();
     int getCurAnimation() const { return currAnimation; }
 
     // private:

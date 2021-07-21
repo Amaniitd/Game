@@ -53,11 +53,15 @@ bool Game::initialize()
     idolr = player.createCycle(12, 64, 64, 2, 30);
     idold = player.createCycle(11, 64, 64, 2, 30);
     idoll = player.createCycle(10, 64, 64, 2, 30);
-    idolu = player.createCycle(9, 64, 64, 9, 30);
+    idolu = player.createCycle(9, 64, 64, 2, 30);
     runr = player.createCycle(12, 64, 64, 9, 2);
     rund = player.createCycle(11, 64, 64, 9, 2);
     runl = player.createCycle(10, 64, 64, 9, 2);
     runu = player.createCycle(9, 64, 64, 9, 2);
+    attackr = player.createCycle(20, 64, 64, 13, 2);
+    attackd = player.createCycle(19, 64, 64, 13, 2);
+    attackl = player.createCycle(18, 64, 64, 13, 2);
+    attacku = player.createCycle(17, 64, 64, 13, 2);
     player.setCurAnimation(idolr);
     speed = 2;
     initTextLoader(100);
@@ -120,6 +124,40 @@ void Game::Cleanup()
 
 void Game::update()
 {
+    if (attack)
+    {
+        if (l2)
+        {
+            if (player.getCurAnimation() != attackl)
+            {
+                player.setCurAnimation(attackl);
+            }
+        }
+        else if (r2)
+        {
+            if (player.getCurAnimation() != attackr)
+            {
+                player.setCurAnimation(attackr);
+            }
+        }
+        else if (u2)
+        {
+            if (player.getCurAnimation() != attacku)
+            {
+                player.setCurAnimation(attacku);
+            }
+        }
+        else
+        {
+            if (player.getCurAnimation() != attackd)
+            {
+                player.setCurAnimation(attackd);
+            }
+        }
+        attack = player.updateAnimationOnce();
+        return;
+    }
+
     if (l)
     {
         if (player.getCurAnimation() != runl)
@@ -167,6 +205,34 @@ void Game::update()
         if (checkWall(player.getDX(), player.getDY()))
         {
             player.setDest(player.getDX(), player.getDY() - speed);
+        }
+    }
+    else if (l2)
+    {
+        if (player.getCurAnimation() != idoll)
+        {
+            player.setCurAnimation(idoll);
+        }
+    }
+    else if (r2)
+    {
+        if (player.getCurAnimation() != idolr)
+        {
+            player.setCurAnimation(idolr);
+        }
+    }
+    else if (u2)
+    {
+        if (player.getCurAnimation() != idolu)
+        {
+            player.setCurAnimation(idolu);
+        }
+    }
+    else
+    {
+        if (player.getCurAnimation() != idold)
+        {
+            player.setCurAnimation(idold);
         }
     }
     player.updateAnimation();
@@ -223,27 +289,42 @@ void Game::handleEvents()
                 d = 1;
                 u = 0;
             }
+            if (event.key.keysym.sym == SDLK_r)
+            {
+                attack = true;
+            }
         }
         if (event.type == SDL_KEYUP)
         {
+            if (event.key.keysym.sym != SDLK_r)
+            {
+                l2 = false;
+                r2 = false;
+                u2 = false;
+                d2 = false;
+            }
             if (event.key.keysym.sym == SDLK_a)
             {
                 l = 0;
+                l2 = true;
                 player.setCurAnimation(idoll);
             }
             if (event.key.keysym.sym == SDLK_d)
             {
                 r = 0;
+                r2 = true;
                 player.setCurAnimation(idolr);
             }
             if (event.key.keysym.sym == SDLK_w)
             {
                 u = 0;
+                u2 = true;
                 player.setCurAnimation(idolu);
             }
             if (event.key.keysym.sym == SDLK_s)
             {
                 d = 0;
+                d2 = true;
                 player.setCurAnimation(idold);
             }
         }
