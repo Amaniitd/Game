@@ -34,7 +34,7 @@ void botAI::move()
         {
             setCurAnimation(botRunl);
         }
-        setDest(getDX() - 2, getDY());
+        setDest(getDX() - 4, getDY());
     }
     else if (rr)
     {
@@ -42,7 +42,7 @@ void botAI::move()
         {
             setCurAnimation(botRunr);
         }
-        setDest(getDX() + 2, getDY());
+        setDest(getDX() + 4, getDY());
     }
     else if (u)
     {
@@ -50,26 +50,26 @@ void botAI::move()
         {
             setCurAnimation(botRunu);
         }
-        setDest(getDX(), getDY() - 2);
+        setDest(getDX(), getDY() - 4);
     }
     else if (d)
     {
-        if (getCurAnimation() != botRunl)
+        if (getCurAnimation() != botRund)
         {
-            setCurAnimation(botRunl);
+            setCurAnimation(botRund);
         }
-        setDest(getDX(), getDY() + 2);
+        setDest(getDX(), getDY() + 4);
     }
-    m1 += 2;
+    m1 += 4;
     if (m1 == 32)
         m1 = 0;
 }
-void botAI::updatePath()
-{
-}
+
 void botAI::initializeBot(int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
 {
+    alive = true;
     m1 = 0;
+    dieing = false;
     m2 = 0;
     int xpos = rand() % (Game::MAP_HEIGHT - 2);
     xpos++;
@@ -87,12 +87,18 @@ void botAI::initializeBot(int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
     }
     botRow = xpos;
     botCol = ypos;
-    botRunr = createCycle(12, 64, 64, 9, 10);
-    botRund = createCycle(11, 64, 64, 9, 10);
-    botRunl = createCycle(10, 64, 64, 9, 10);
-    botRunu = createCycle(9, 64, 64, 9, 10);
+    botRunr = createCycle(12, 64, 64, 9, 2);
+    botRund = createCycle(11, 64, 64, 9, 2);
+    botRunl = createCycle(10, 64, 64, 9, 2);
+    botRunu = createCycle(9, 64, 64, 9, 2);
+    botAttackr = createCycle(20, 64, 64, 13, 1);
+    botAttackd = createCycle(19, 64, 64, 13, 1);
+    botAttackl = createCycle(18, 64, 64, 13, 1);
+    botAttacku = createCycle(17, 64, 64, 13, 1);
+    botDie = createCycle(21, 64, 64, 6, 5);
     setCurAnimation(botRunr);
     initObject("image/bots.png", ypos * 32, xpos * 32);
+    setHealth(100);
 }
 
 void botAI::solve(int sr, int sc, int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
@@ -162,4 +168,12 @@ void botAI::explore_neighbours(int r, int c, int map[Game::MAP_HEIGHT][Game::MAP
         visited[rr][cc] = true;
         nodes_in_next_layer++;
     }
+}
+
+
+void botAI::triggerDeath(){
+    setHealth(0);
+    alive = false;
+    setCurAnimation(botDie);
+    dieing = true;
 }

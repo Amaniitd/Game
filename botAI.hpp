@@ -6,6 +6,7 @@ class botAI : public Entity
 {
 public:
     void move();
+    bool alive;
     void solve(int sr, int sc, int map[Game::MAP_HEIGHT][Game::MAP_WIDTH]);
     void updatePath();
     void initializeBot(int map[Game::MAP_HEIGHT][Game::MAP_WIDTH]);
@@ -13,6 +14,8 @@ public:
     int Rtraces[Game::MAP_HEIGHT][Game::MAP_WIDTH];
     int Ctraces[Game::MAP_HEIGHT][Game::MAP_WIDTH];
     void explore_neighbours(int r, int c, int map[Game::MAP_HEIGHT][Game::MAP_WIDTH]);
+    void triggerDeath();
+    bool dieing;
     int node_left_in_layer;
     int nodes_in_next_layer;
     int botRunr;
@@ -23,6 +26,7 @@ public:
     int botAttackr;
     int botAttacku;
     int botAttackd;
+    int botDie;
     int r, c;
     int m1, m2;
     int count;

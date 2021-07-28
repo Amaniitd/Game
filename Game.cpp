@@ -50,20 +50,21 @@ bool Game::initialize()
     renderer = SDL_CreateRenderer(window, -1, 0);
     Map();
     player.initObject("image/female.png", 32, 32);
-    idolr = player.createCycle(12, 64, 64, 2, 30);
-    idold = player.createCycle(11, 64, 64, 2, 30);
-    idoll = player.createCycle(10, 64, 64, 2, 30);
-    idolu = player.createCycle(9, 64, 64, 2, 30);
+    idolr = player.createCycle(12, 64, 64, 2, 15);
+    idold = player.createCycle(11, 64, 64, 2, 15);
+    idoll = player.createCycle(10, 64, 64, 2, 15);
+    idolu = player.createCycle(9, 64, 64, 2, 15);
     runr = player.createCycle(12, 64, 64, 9, 2);
     rund = player.createCycle(11, 64, 64, 9, 2);
     runl = player.createCycle(10, 64, 64, 9, 2);
     runu = player.createCycle(9, 64, 64, 9, 2);
-    attackr = player.createCycle(20, 64, 64, 13, 2);
-    attackd = player.createCycle(19, 64, 64, 13, 2);
-    attackl = player.createCycle(18, 64, 64, 13, 2);
-    attacku = player.createCycle(17, 64, 64, 13, 2);
+    attackr = player.createCycle(20, 64, 64, 13, 1);
+    attackd = player.createCycle(19, 64, 64, 13, 1);
+    attackl = player.createCycle(18, 64, 64, 13, 1);
+    attacku = player.createCycle(17, 64, 64, 13, 1);
+    die = player.createCycle(21, 64, 64, 6, 5);
     player.setCurAnimation(idolr);
-    speed = 2;
+    speed = 4;
     initTextLoader(100);
     initWelcomeScreen();
 
@@ -155,6 +156,17 @@ void Game::update()
             }
         }
         attack = player.updateAnimationOnce();
+        triggerAttack();
+        for (int i = 0; i < 10; i++)
+        {
+            if (b[i]->dieing)
+            {
+                b[i]->dieing = b[i]->updateAnimationOnce();
+                continue;
+            }
+            b[i]->solve(player.getDY() / 32, player.getDX() / 32, map);
+            b[i]->updateAnimation();
+        }
         return;
     }
 
@@ -228,7 +240,7 @@ void Game::update()
             player.setCurAnimation(idolu);
         }
     }
-    else
+    else if (d2)
     {
         if (player.getCurAnimation() != idold)
         {
@@ -238,6 +250,8 @@ void Game::update()
     player.updateAnimation();
     for (int i = 0; i < 10; i++)
     {
+        if (!b[i]->alive)
+            continue;
         b[i]->solve(player.getDY() / 32, player.getDX() / 32, map);
         b[i]->updateAnimation();
     }
@@ -249,8 +263,17 @@ void Game::render()
     player.Render();
     for (int i = 0; i < 10; i++)
     {
+        if (!b[i]->alive)
+        {
+            if (!b[i]->dieing)
+            {
+                continue;
+            }
+        }
         b[i]->Render();
+        cout << b[i]->getHealth() << " ";
     }
+    cout << endl;
     // player2.Render();
     // player3.Render();
     SDL_RenderPresent(renderer);
@@ -327,6 +350,93 @@ void Game::handleEvents()
                 d2 = true;
                 player.setCurAnimation(idold);
             }
+        }
+    }
+}
+
+void Game::triggerAttack()
+{
+    int playerPosX = player.getDX() / 32;
+    int playerPosY = player.getDY() / 32;
+    if (u2)
+    {
+        while (!map[playerPosY][playerPosX])
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (b[i]->getDX() / 32 == playerPosX && b[i]->getDY() / 32 == playerPosY)
+                {
+                    if (!b[i]->alive)
+                        continue;
+
+                    b[i]->setHealth(b[i]->getHealth() - 20);
+                    if (b[i]->getHealth() <= 0)
+                        b[i]->triggerDeath();
+                    return;
+                }
+            }
+            playerPosY--;
+        }
+    }
+    else if (d2)
+    {
+        while (!map[playerPosY][playerPosX])
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (b[i]->getDX() / 32 == playerPosX && b[i]->getDY() / 32 == playerPosY)
+                {
+                    if (!b[i]->alive)
+                        continue;
+
+                    b[i]->setHealth(b[i]->getHealth() - 20);
+                    if (b[i]->getHealth() <= 0)
+                        b[i]->triggerDeath();
+
+                    return;
+                }
+            }
+            playerPosY++;
+        }
+    }
+    else if (l2)
+    {
+        while (!map[playerPosY][playerPosX])
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (b[i]->getDX() / 32 == playerPosX && b[i]->getDY() / 32 == playerPosY)
+                {
+                    if (!b[i]->alive)
+                        continue;
+
+                    b[i]->setHealth(b[i]->getHealth() - 20);
+                    if (b[i]->getHealth() <= 0)
+                        b[i]->triggerDeath();
+
+                    return;
+                }
+            }
+            playerPosX--;
+        }
+    }
+    else
+    {
+        while (!map[playerPosY][playerPosX])
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (b[i]->getDX() / 32 == playerPosX && b[i]->getDY() / 32 == playerPosY)
+                {
+                    if (!b[i]->alive)
+                        continue;
+                    b[i]->setHealth(b[i]->getHealth() - 1);
+                    if (b[i]->getHealth() <= 0)
+                        b[i]->triggerDeath();
+                    return;
+                }
+            }
+            playerPosX++;
         }
     }
 }
