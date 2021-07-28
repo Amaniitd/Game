@@ -64,6 +64,7 @@ bool Game::initialize()
     attacku = player.createCycle(17, 64, 64, 13, 1);
     die = player.createCycle(21, 64, 64, 6, 5);
     player.setCurAnimation(idolr);
+    r2 = true;
     speed = 4;
     initTextLoader(100);
     initWelcomeScreen();
@@ -369,7 +370,7 @@ void Game::triggerAttack()
                     if (!b[i]->alive)
                         continue;
 
-                    b[i]->setHealth(b[i]->getHealth() - 20);
+                    b[i]->setHealth(b[i]->getHealth() - 1);
                     if (b[i]->getHealth() <= 0)
                         b[i]->triggerDeath();
                     return;
@@ -389,7 +390,7 @@ void Game::triggerAttack()
                     if (!b[i]->alive)
                         continue;
 
-                    b[i]->setHealth(b[i]->getHealth() - 20);
+                    b[i]->setHealth(b[i]->getHealth() - 1);
                     if (b[i]->getHealth() <= 0)
                         b[i]->triggerDeath();
 
@@ -410,7 +411,7 @@ void Game::triggerAttack()
                     if (!b[i]->alive)
                         continue;
 
-                    b[i]->setHealth(b[i]->getHealth() - 20);
+                    b[i]->setHealth(b[i]->getHealth() - 1);
                     if (b[i]->getHealth() <= 0)
                         b[i]->triggerDeath();
 

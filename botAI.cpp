@@ -143,7 +143,7 @@ void botAI::solve(int sr, int sc, int map[Game::MAP_HEIGHT][Game::MAP_WIDTH])
             }
         }
     }
-    if (count > 0)
+    if (count > 1)
         move();
 }
 
@@ -170,8 +170,8 @@ void botAI::explore_neighbours(int r, int c, int map[Game::MAP_HEIGHT][Game::MAP
     }
 }
 
-
-void botAI::triggerDeath(){
+void botAI::triggerDeath()
+{
     setHealth(0);
     alive = false;
     setCurAnimation(botDie);
